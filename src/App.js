@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { getResponse } from './API/apiCall'
+import ShowData from './components/ShowData'
 
 function App() {
+
+  const [location, setlocation] = useState('')
+  const [weather, setWeather] = useState('')
+
+    const processResponse = async() => {
+      const {data} = await getResponse(location)
+      setWeather(data)
+      console.log(weather)
+    }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="take-input">
+        <div className='input-div'>
+          <input
+            className='input-field'
+            name='enter-location'
+            placeholder='location'
+            value={location}
+            onChange={(e) => setlocation(e.target.value)} />
+        </div>
+        <div className='button-div'>
+          <button className='search-btn' onClick={processResponse}>Search</button>
+        </div>
+      </div>
+
+      <div className='show-data'>
+      <ShowData weather={weather} />
+      </div>
     </div>
   );
 }
